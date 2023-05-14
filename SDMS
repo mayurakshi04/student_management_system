@@ -1,0 +1,220 @@
+#include <stdio.h>
+#include <string.h>
+
+// To keep track of the number of students
+int i = 0;
+
+// A structure to store the student details
+struct studentInfo
+{
+   char Fname[20];
+   char Lname[20];
+   int roll;
+   int marks[3];
+   char grade[3];
+   int courseId[3];
+} st[100];
+
+//Function to allocate grade based on marks
+char gradeAllocation(int m)
+{
+if(m>=90)
+return 'A';
+else if(m>=80)
+return 'B';
+else if(m>=70)
+return 'C';
+else if(m>=60)
+return 'D';
+else if(m>=50)
+return 'E';
+else 
+return 'F';
+}
+
+// Function to add new student 
+void addStudent()
+{
+   printf("\n\n--------------------\nAdd Student's Details:\n\n");
+   printf("Enter the FIRST NAME of the student: ");
+   scanf("%s", st[i].Fname);
+   printf("Enter the LAST NAME of the student: ");
+   scanf("%s", st[i].Lname);
+   printf("Enter the ROLL NUMBER of the student: ");
+   scanf("%d", &st[i].roll);
+   printf("Enter the COURSE ID and MARKS of the student:\n");
+   for (int j = 0; j < 3; j++)
+   {
+    printf("Course %d: ",(j+1));
+    scanf("%d", &st[i].courseId[j]);
+    printf("Marks: ");
+    scanf("%d", &st[i].marks[j]);
+   st[i].grade[j]=gradeAllocation(st[i].marks[j]);
+   }
+   i++;
+}
+
+// Function to find a student using roll number
+void findByRollNumber()
+{
+   int temp;
+   printf("\n\n--------------------\nEnter the roll number of the student: ");
+   scanf("%d", &temp);
+   for (int j = 0; j < i; j++)
+   {
+      if (temp == st[j].roll)
+      {
+      	 printf("\nSTUDENT RECORD:\n");
+         printf("NAME: %s %s\nROLL: %d\n\n", st[j].Fname,st[j].Lname,st[j].roll);
+         printf("COURSE\tMARKS\tGRADE\n");
+         for (int k = 0; k < 3; k++)
+         {
+            printf("%d\t%d\t%c\n",st[j].courseId[k],st[j].marks[k],st[j].grade[k]);
+         }
+      }
+   }
+}
+
+// Function to find students enrolled in a specific course
+void findRegisteredStudent()
+{
+   int temp;
+   printf("\n\n---------------------\nEnter the course ID: ");
+   scanf("%d", &temp);
+   printf("\nSTUDENT RECORD:\n\n");
+   printf("Roll\tName\t\tMarks\tGrade\n");
+   for (int j = 0; j < i; j++)
+   {
+      for (int k = 0; k < 3; k++)
+      {
+         if (temp == st[j].courseId[k])
+         {
+            printf("%d\t%s %s\t%d\t%c\n",st[j].roll,st[j].Fname,st[j].Lname,st[j].marks[k],st[j].grade[k]);
+         }
+      }
+   }
+}
+
+// Function to print the total number of students
+void totalCount()
+{
+   printf("\n\n---------------------\nThe total number of students currently in the system is %d.\n\n", i);
+   printf("STUDENT RECORD:\n\n");
+   printf("Roll\tName\n");
+   for (int j = 0; j < i; j++)
+   {
+            printf("%d\t%s %s\n",st[j].roll,st[j].Fname,st[j].Lname);
+    }
+}
+
+
+// Function to delete a student record
+void deleteStudent()
+{
+   int temp;
+   printf("\n\n--------------------\nEnter the roll number of the student: ");
+   scanf("%d", &temp);
+   int j;
+   for (j = 0; j < i; j++)
+   {
+      if (temp == st[j].roll)
+      {
+      	printf("Student Name: %s %s\n",st[j].Fname,st[j].Lname);
+         for (int k = j; k < i-1; k++)
+         {
+            st[k] = st[k + 1];
+         }
+         i--;
+         break;
+      }
+   }
+   printf("Student's record deleted successfully.");
+}
+
+// Function to update a student's data
+void updateStudent()
+{
+   int temp;
+   printf("\n\n--------------------\nEnter the roll number of the student: ");
+   scanf("%d", &temp);
+   for (int j = 0; j < i; j++)
+   {
+      if (temp == st[j].roll)
+      {
+         printf("1. Name\n2. Roll Number\n3. Marks\nEnter what you would like to update (1-3): ");
+         int choice;
+         scanf("%d", &choice);
+         switch(choice) 
+		 {
+            case 1:
+               printf("Enter the first name : ");
+               scanf("%s", st[j].Fname);
+               printf("Enter the last name : ");
+               scanf("%s", st[j].Lname);
+               break;
+            case 2:
+               printf("Enter the updated roll number : ");
+               scanf("%d", &st[j].roll);
+               break;
+            case 3:
+               printf("Enter the course ID and respective marks of the student:\n");
+   				for (int k = 0; k < 3; k++)
+   				{
+    			printf("Course %d:",(k+1));
+    			scanf("%d", &st[j].courseId[k]);
+    			printf("Marks:");
+    			scanf("%d", &st[j].marks[k]);
+    			st[j].grade[k]=gradeAllocation(st[j].marks[k]);
+    		    }
+    			break;
+    		default: printf("Invalid Input.");
+    	}
+        printf("Records updated successfully.");
+      }
+   }
+}
+
+int main()
+{
+   int task;
+   while (1)
+   {
+      printf("\n\n--------------------\n");
+      printf("1. Add new student record\n");
+      printf("2. Find student record by roll number\n");
+      printf("3. Display student list of a course\n");
+      printf("4. Display the total number of students\n");
+      printf("5. Update student details\n");
+      printf("6. Delete student record\n");
+      printf("7. Exit\n");
+      printf("Enter the task that you want to perform (1-7): ");
+      scanf("%d", &task);
+
+      switch (task)
+      {
+      case 1:
+         addStudent();
+         break;
+      case 2:
+         findByRollNumber();
+         break;
+      case 3:
+      	findRegisteredStudent();
+      	break;
+      case 4:
+         totalCount();
+         break;
+      case 5:
+         updateStudent();
+         break;
+      case 6:
+         deleteStudent();
+         break;
+      case 7:
+         return 0;
+         break;
+      default:
+         printf("Ivalid Input.");
+      }
+   }
+}
